@@ -6,6 +6,7 @@ include(FetchContent)
 set(FETCHCONTENT_UPDATES_DISCONNECTED TRUE)
 FetchContent_Declare(ftxui
   GIT_REPOSITORY https://github.com/ArthurSonzogni/ftxui
+  GIT_TAG 2445dc03d33cfcfcb1882c24b4c662ae6f675fd5
   # Specify a GIT TAG here.
 )
 
@@ -17,21 +18,29 @@ endif()
 
 # ------------------------------------------------------------------------------
 
-project(ftxui-starter
+project(fungi
   LANGUAGES CXX
   VERSION 1.0.0
 )
 
-add_executable(ftxui-starter src/main.cpp)
-target_include_directories(ftxui-starter PRIVATE src)
+add_executable(fungi
+  src/fungi/main.cpp
+  src/fungi/panel/panel.hpp
+  src/fungi/panel/sound/sound.cpp
+  src/fungi/panel/placeholder/placeholder.cpp
+)
+target_include_directories(fungi PRIVATE src)
 
-target_link_libraries(ftxui-starter
+find_package(ALSA REQUIRED)
+
+target_link_libraries(fungi
   PRIVATE ftxui::screen
   PRIVATE ftxui::dom
   PRIVATE ftxui::component # Not needed for this example.
+  PRIVATE ALSA::ALSA
 )
 
 # C++17 is used. We requires fold expressions at least.
-set_target_properties(ftxui-starter PROPERTIES CXX_STANDARD 17)
+set_target_properties(fungi PROPERTIES CXX_STANDARD 17)
 
-install(TARGETS ftxui-starter RUNTIME DESTINATION "bin")
+install(TARGETS fungi RUNTIME DESTINATION "bin")
